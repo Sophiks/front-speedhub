@@ -47,7 +47,6 @@ const Header = () => {
   const registerModal = () => setIsRegisterModal(true);
   const loginModal = () => setIsRegisterModal(false);
 
-  // Закриття модалки акаунта при кліку в будь-якому іншому місці
   useEffect(() => {
     if (!isUserAccountOpen) return;
     const handleClickOutside = () => setIsUserAccountOpen(false);
@@ -55,7 +54,6 @@ const Header = () => {
     return () => window.removeEventListener("click", handleClickOutside);
   }, [isUserAccountOpen]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       closeMenu();
@@ -97,13 +95,12 @@ const Header = () => {
           <div className={css.rightPanel}>
             <div className={css.desktopButtons}>
               {userName ? (
-                /* Кнопка акаунта з обгорткою для позиціювання */
                 <div className={css.userMenuContainer}>
                   <button
                     type="button"
                     className={css.userBtn}
                     onClick={(e) => {
-                      e.stopPropagation(); // Зупиняємо спливання кліку
+                      e.stopPropagation();
                       e.nativeEvent.stopImmediatePropagation();
                       setIsUserAccountOpen(!isUserAccountOpen);
                     }}
@@ -125,7 +122,6 @@ const Header = () => {
                   </button>
 
                   {isUserAccountOpen && (
-                    /* Зупиняємо клік всередині модалки, щоб вона не закривалася сама */
                     <div onClick={(e) => e.stopPropagation()}>
                       <UserAccount
                         onClose={() => setIsUserAccountOpen(false)}

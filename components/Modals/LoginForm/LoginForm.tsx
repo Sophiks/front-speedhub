@@ -11,7 +11,6 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ onClose, onOpen }: LoginFormProps) {
-  // Викликаємо наш хук, який зробить всю роботу
   const { handleLogin, error } = useAuthActions(onClose);
 
   return (

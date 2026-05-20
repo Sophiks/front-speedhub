@@ -13,10 +13,10 @@ import { useRouter } from "next/navigation";
 
 const Header = () => {
   const router = useRouter();
-
   const pathname = usePathname();
   const [userName, setUserName] = useState<string | null>(null);
   const [isUserAccountOpen, setIsUserAccountOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Стейт бургер-меню
 
   const desktopNavLinks = [
     { name: "Головна", href: "/" },
@@ -25,7 +25,6 @@ const Header = () => {
     { name: "Робота над помилками", href: "/mistakes" },
   ];
 
-  // Слідкуємо за станом авторизації
   useEffect(() => {
     const updateHeader = () => {
       setUserName(getUserName());
@@ -35,9 +34,11 @@ const Header = () => {
     return () => window.removeEventListener("auth-change", updateHeader);
   }, []);
 
-  const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = () => {
+    setIsOpen(false);
+    setIsUserAccountOpen(false);
+  };
 
   const [isopenModal, setIsOpenModal] = useState(false);
   const openModal = () => setIsOpenModal(true);
@@ -48,17 +49,11 @@ const Header = () => {
   const loginModal = () => setIsRegisterModal(false);
 
   useEffect(() => {
-    if (!isUserAccountOpen) return;
+    if (!isUserAccountOpen || isOpen) return;
     const handleClickOutside = () => setIsUserAccountOpen(false);
     window.addEventListener("click", handleClickOutside);
     return () => window.removeEventListener("click", handleClickOutside);
-  }, [isUserAccountOpen]);
-
-  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget) {
-      closeMenu();
-    }
-  };
+  }, [isUserAccountOpen, isOpen]);
 
   useEffect(() => {
     const overflow = isOpen ? "hidden" : "";
@@ -67,200 +62,205 @@ const Header = () => {
   }, [isOpen]);
 
   return (
-    <>
-      <header className={css.header}>
-        <div className={css.container}>
-          <Link href="/" className={css.logo} onClick={closeMenu}>
-            <span className={css.icon}>🚀</span>
-            <span className={css.title}>
+      <>
+        <header className={css.header}>
+          <div className={css.container}>
+            <Link href="/" className={css.logo} onClick={closeMenu}>
+              <span className={css.icon}>🚀</span>
+              <span className={css.title}>
               Speed<span className={css.titleSmall}>hub</span>
             </span>
-          </Link>
+            </Link>
 
-          <nav className={css.desktopNav}>
-            <ul className={css.desktopNavList}>
-              {desktopNavLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    className={`${css.navLink} ${link.href === pathname ? css.active : ""}`}
-                    href={link.href}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className={css.rightPanel}>
-            <div className={css.desktopButtons}>
-              {userName ? (
-                <div className={css.userMenuContainer}>
-                  <button
-                    type="button"
-                    className={css.userBtn}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.nativeEvent.stopImmediatePropagation();
-                      setIsUserAccountOpen(!isUserAccountOpen);
-                    }}
-                  >
-                    {userName}
-                    <svg
-                      className={`${css.arrow} ${isUserAccountOpen ? css.arrowRotated : ""}`}
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                  </button>
-
-                  {isUserAccountOpen && (
-                    <div onClick={(e) => e.stopPropagation()}>
-                      <UserAccount
-                        onClose={() => setIsUserAccountOpen(false)}
-                      />
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <ul className={css.desktopButtonsList}>
-                  <li>
-                    <button
-                      type="button"
-                      className={`${css.button} ${css.loginButton}`}
-                      onClick={() => {
-                        closeMenu();
-                        loginModal();
-                        openModal();
-                      }}
-                    >
-                      Увійти
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      type="button"
-                      className={`${css.button} ${css.registerButton}`}
-                      onClick={() => {
-                        closeMenu();
-                        registerModal();
-                        openModal();
-                      }}
-                    >
-                      Зареєструватись
-                    </button>
-                  </li>
-                </ul>
-              )}
-            </div>
-
-            <button
-              type="button"
-              className={css.burgerBtn}
-              onClick={toggleMenu}
-            >
-              {isOpen ? "✕" : "☰"}
-            </button>
-          </div>
-        </div>
-
-        {/* Мобільне меню */}
-        {isOpen && (
-          <div className={css.drawer}>
-            <div className={css.drawerContent}>
-              <nav>
-                <ul className={css.mobileNavList}>
-                  {desktopNavLinks.map((link) => (
-                    <li key={link.href}>
+            <nav className={css.desktopNav}>
+              <ul className={css.desktopNavList}>
+                {desktopNavLinks.map((link) => (
+                    <li key={link.name}>
                       <Link
-                        className={css.navLink}
-                        href={link.href}
-                        onClick={closeMenu}
+                          className={`${css.navLink} ${link.href === pathname ? css.active : ""}`}
+                          href={link.href}
                       >
                         {link.name}
                       </Link>
                     </li>
-                  ))}
-                </ul>
-              </nav>
-              <div className={css.mobileOnlyButtons}>
+                ))}
+              </ul>
+            </nav>
+
+            <div className={css.rightPanel}>
+              <div className={css.desktopButtons}>
                 {userName ? (
-                  <button
-                    className={`${css.button} ${css.loginButton} ${css.fullWidthBtn}`}
-                    onClick={() => {
-                      setIsUserAccountOpen(true);
-                      
-                      closeMenu();
-                      router.push("/mistakes");
-                    }}
-                  >
-                    Мій кабінет ({userName})
-                  </button>
+                    <div className={css.userMenuContainer}>
+                      <button
+                          type="button"
+                          className={css.userBtn}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsUserAccountOpen(!isUserAccountOpen);
+                          }}
+                      >
+                        {userName}
+                        <svg
+                            className={`${css.arrow} ${isUserAccountOpen ? css.arrowRotated : ""}`}
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                          <path d="M6 9l6 6 6-6" />
+                        </svg>
+                      </button>
+
+                      {isUserAccountOpen && (
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <UserAccount onClose={() => setIsUserAccountOpen(false)} />
+                          </div>
+                      )}
+                    </div>
                 ) : (
-                  <ul className={css.mobileButtonsList}>
-                    <li>
-                      <button
-                        className={`${css.button} ${css.loginButton} ${css.fullWidthBtn}`}
-                        onClick={() => {
-                          closeMenu();
-                          loginModal();
-                          openModal();
-                        }}
-                      >
-                        Увійти
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className={`${css.button} ${css.registerButton} ${css.fullWidthBtn}`}
-                        onClick={() => {
-                          closeMenu();
-                          registerModal();
-                          openModal();
-                        }}
-                      >
-                        Зареєструватись
-                      </button>
-                    </li>
-                  </ul>
+                    <ul className={css.desktopButtonsList}>
+                      <li>
+                        <button
+                            type="button"
+                            className={`${css.button} ${css.loginButton}`}
+                            onClick={() => {
+                              closeMenu();
+                              loginModal();
+                              openModal();
+                            }}
+                        >
+                          Увійти
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                            type="button"
+                            className={`${css.button} ${css.registerButton}`}
+                            onClick={() => {
+                              closeMenu();
+                              registerModal();
+                              openModal();
+                            }}
+                        >
+                          Зареєструватись
+                        </button>
+                      </li>
+                    </ul>
                 )}
               </div>
+
+              <button
+                  type="button"
+                  className={css.burgerBtn}
+                  onClick={toggleMenu}
+              >
+                {isOpen ? "✕" : "☰"}
+              </button>
             </div>
           </div>
-        )}
-      </header>
 
-      {isopenModal && (
-        <ModalSection onClose={closeModal}>
-          {isRegisterModal ? (
-            <RegisterForm
-              onClose={closeModal}
-              onOpen={() => {
-                closeModal();
-                loginModal();
-                openModal();
-              }}
-            />
-          ) : (
-            <LoginForm
-              onClose={closeModal}
-              onOpen={() => {
-                closeModal();
-                registerModal();
-                openModal();
-              }}
-            />
+          {isOpen && (
+              <div className={css.drawer}>
+                <div className={css.drawerContent}>
+                  <nav>
+                    <ul className={css.mobileNavList}>
+                      {desktopNavLinks.map((link) => (
+                          <li key={link.href}>
+                            <Link
+                                className={`${css.navLink} ${link.href === pathname ? css.active : ""}`}
+                                href={link.href}
+                                onClick={closeMenu}
+                            >
+                              {link.name}
+                            </Link>
+                          </li>
+                      ))}
+                    </ul>
+                  </nav>
+
+                  <div className={css.mobileOnlyButtons}>
+                    {userName ? (
+                        <div className={css.mobileUserWrapper}>
+                          <button
+                              className={`${css.button} ${css.loginButton} ${css.fullWidthBtn}`}
+                              onClick={() => {
+                                setIsUserAccountOpen(!isUserAccountOpen);
+                              }}
+                          >
+                            {isUserAccountOpen ? "Закрити кабінет" : `Мій кабінет (${userName}) 👤`}
+                          </button>
+
+                          {isUserAccountOpen && (
+                              <div className={css.mobileUserAccountContent}>
+                                <UserAccount onClose={() => {
+                                  setIsUserAccountOpen(false);
+                                  setIsOpen(false);
+                                }} />
+                              </div>
+                          )}
+                        </div>
+                    ) : (
+                        <ul className={css.mobileButtonsList}>
+                          <li>
+                            <button
+                                className={`${css.button} ${css.loginButton} ${css.fullWidthBtn}`}
+                                onClick={() => {
+                                  closeMenu();
+                                  loginModal();
+                                  openModal();
+                                }}
+                            >
+                              Увійти
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                                className={`${css.button} ${css.registerButton} ${css.fullWidthBtn}`}
+                                onClick={() => {
+                                  closeMenu();
+                                  registerModal();
+                                  openModal();
+                                }}
+                            >
+                              Зареєструватись
+                            </button>
+                          </li>
+                        </ul>
+                    )}
+                  </div>
+                </div>
+              </div>
           )}
-        </ModalSection>
-      )}
-    </>
+        </header>
+
+        {isopenModal && (
+            <ModalSection onClose={closeModal}>
+              {isRegisterModal ? (
+                  <RegisterForm
+                      onClose={closeModal}
+                      onOpen={() => {
+                        closeModal();
+                        loginModal();
+                        openModal();
+                      }}
+                  />
+              ) : (
+                  <LoginForm
+                      onClose={closeModal}
+                      onOpen={() => {
+                        closeModal();
+                        registerModal();
+                        openModal();
+                      }}
+                  />
+              )}
+            </ModalSection>
+        )}
+      </>
   );
 };
 

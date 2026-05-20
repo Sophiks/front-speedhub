@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import AddReviewModal from './AddReviewModal';
 import styles from './ReviewsSection.module.css';
 
 const BASE_URL = "https://speedhub-back.onrender.com/api/reviews";
@@ -20,6 +21,7 @@ export const ReviewsSection: React.FC = () => {
     const [reviews, setReviews] = useState<Review[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 🔥 Стейт для модалки
 
     const getAvatarUrl = (photoPath: string): string => {
         if (!photoPath) return '/images/reviewsImg/default-avatar.jpg';
@@ -41,17 +43,19 @@ export const ReviewsSection: React.FC = () => {
         target.src = `https://ui-avatars.com/api/?name=Student&background=109cf1&color=fff&size=300`;
     };
 
+    const fetchReviews = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get<Review[]>(BASE_URL);
+            setReviews(response.data);
+        } catch (error) {
+            console.error('Помилка при отриманні відгуків з БД:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const response = await axios.get<Review[]>(BASE_URL);
-                setReviews(response.data);
-            } catch (error) {
-                console.error('Помилка при отриманні відгуків з БД:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchReviews();
     }, []);
 
@@ -79,6 +83,13 @@ export const ReviewsSection: React.FC = () => {
                     <p className={styles.subtitle}>
                         Відгуки реальних користувачів платформи SpeedHub
                     </p>
+
+                    <button
+                        className={styles.writeReviewBtn}
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        ✍️ Залишити відгук
+                    </button>
                 </div>
 
                 {loading ? (
@@ -136,6 +147,12 @@ export const ReviewsSection: React.FC = () => {
                     </div>
                 )}
             </div>
+
+            <AddReviewModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSuccess={fetchReviews}
+            />
         </section>
     );
 };

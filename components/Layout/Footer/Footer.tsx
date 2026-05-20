@@ -3,7 +3,6 @@ import Link from 'next/link'; // або 'react-router-dom'
 import css from './Footer.module.css';
 
 const Footer = () => {
-    // Автоматично беремо поточний рік, щоб не міняти його вручну кожного разу
     const currentYear = new Date().getFullYear();
 
     return (

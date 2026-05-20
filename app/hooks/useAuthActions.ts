@@ -4,6 +4,7 @@ import { useState } from "react";
 import { authService } from "@/app/services/authService";
 import { AuthResponse, LoginValues, RegisterValues } from "@/types/user";
 import { triggerAuthUpdate } from "@/app/utils/auth";
+import { useRouter } from "next/navigation";
 
 interface AuthError {
   response?: {
@@ -17,11 +18,12 @@ interface AuthError {
 
 export const useAuthActions = (onClose: () => void) => {
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleLogin = async (values: LoginValues): Promise<void> => {
     setError(null);
     try {
-      const response = (await authService.login(values)) as any;
+      const response = (await authService.login(values)) as AuthResponse;
 
       const name = response.name || "Користувач";
       const role = response.role || "user";
@@ -35,17 +37,17 @@ export const useAuthActions = (onClose: () => void) => {
       localStorage.setItem("token", token);
 
       localStorage.setItem(
-        "fullUserData",
-        JSON.stringify({
-          name,
-          surname,
-          role,
-          subscriptionType,
-        }),
+          "fullUserData",
+          JSON.stringify({
+            name,
+            surname,
+            role,
+            subscriptionType,
+          }),
       );
 
       const expires = new Date(
-        Date.now() + 7 * 24 * 60 * 60 * 1000,
+          Date.now() + 7 * 24 * 60 * 60 * 1000,
       ).toUTCString();
       document.cookie = `token=${token}; expires=${expires}; path=/; SameSite=Lax;`;
       document.cookie = `accessToken=${token}; expires=${expires}; path=/; SameSite=Lax;`;
@@ -54,11 +56,16 @@ export const useAuthActions = (onClose: () => void) => {
 
       if (onClose) onClose();
 
-      window.location.href = role === "admin" ? "/admin" : "/tests";
+      if (role === "admin") {
+        router.push("/admin");
+      } else {
+        router.refresh();
+      }
+
     } catch (err: unknown) {
       const errorParsed = err as AuthError;
       setError(
-        errorParsed.response?.data?.message ||
+          errorParsed.response?.data?.message ||
           errorParsed.message ||
           "Невірний логін або пароль",
       );

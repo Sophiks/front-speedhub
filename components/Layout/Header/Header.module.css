@@ -5,6 +5,8 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .container {
@@ -14,6 +16,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -56,6 +59,7 @@
   align-items: center;
   justify-content: center;
   z-index: 101;
+  font-size: 22px;
 }
 
 .backdrop {
@@ -79,6 +83,7 @@
   z-index: 99;
   padding: 32px 24px;
   overflow-y: auto;
+  box-sizing: border-box;
   animation: slideDown 0.3s ease-out forwards;
 }
 
@@ -87,6 +92,7 @@
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
+  gap: 24px;
 }
 
 .mobileNavList {
@@ -99,16 +105,6 @@
   margin: 24px 0 0 0;
 }
 
-.mobileButtonsList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-  padding: 0;
-  margin: 40px 0 24px 0;
-}
-
 .navLink {
   color: var(--header-links-footer-text);
   text-decoration: none;
@@ -118,10 +114,7 @@
 }
 
 .navLink:hover,
-.navLink:active {
-  color: var(--header-links-hover);
-}
-
+.navLink:active,
 .navLink.active {
   color: var(--header-links-hover);
 }
@@ -137,6 +130,8 @@
   border: none;
   outline: none;
   transition: all 0.3s ease;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .fullWidthBtn {
@@ -169,15 +164,126 @@
   transform: translateY(-2px);
 }
 
+.userMenuContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.userBtn {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--header-logo-burger);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: inherit;
+  padding: 4px 0;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+.arrowRotated {
+  transform: rotate(180deg);
+}
+
+.userWrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.welcomeText {
+  color: var(--header-links-footer-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.logoutBtn {
+  background-color: transparent;
+  color: var(--header-logo-burger);
+  border: 1px solid var(--header-register-btn-border);
+}
+
+.logoutBtn:hover {
+  background-color: var(--header-register-btn-bg-hover);
+  color: var(--header-register-btn-text);
+}
+
+.mobileOnlyButtons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.mobileUserWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.mobileUserAccountContent {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid var(--header-register-btn-border);
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.mobileUserAccountContent > div {
+  position: relative !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.mobileButtonsList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.mobileButtonsList li {
+  width: 100%;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;
     transform: translateY(-20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }
 
@@ -211,16 +317,6 @@
   }
 }
 
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
 @media (min-width: 1024px) {
   .desktopNav {
     display: block;
@@ -246,65 +342,4 @@
   .drawer {
     display: none !important;
   }
-}
-
-/* Додай це в кінець файлу */
-
-.userWrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.welcomeText {
-  color: var(--header-links-footer-text);
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.logoutBtn {
-  background-color: transparent;
-  color: var(--header-logo-burger);
-  border: 1px solid var(--header-register-btn-border);
-}
-
-.logoutBtn:hover {
-  background-color: var(--header-register-btn-bg-hover);
-  color: var(--header-register-btn-text);
-}
-
-/* Коригування для мобільного меню */
-.mobileOnlyButtons {
-  width: 100%;
-}
-
-/* Додай або онови ці класи в кінці Header.module.css */
-
-.userMenuContainer {
-  position: relative; /* ЦЕ ОБОВ'ЯЗКОВО */
-  display: flex;
-  align-items: center;
-}
-
-.userBtn {
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--header-logo-burger);
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 18px;
-  font-family: inherit;
-  padding: 4px 0;
-}
-
-.arrow {
-  transition: transform 0.3s ease;
-  pointer-events: none; /* Щоб клік по стрілці не заважав кнопці */
-}
-
-.arrowRotated {
-  transform: rotate(180deg);
 }

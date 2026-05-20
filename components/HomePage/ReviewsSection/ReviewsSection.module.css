@@ -145,6 +145,25 @@
     border-color: #109cf1;
     transform: scale(1.05);
 }
+.writeReviewBtn {
+    margin-top: 16px;
+    padding: 10px 24px;
+    background: #109cf1; /* Твій синій колір SpeedHub */
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(16, 156, 241, 0.3);
+}
+
+.writeReviewBtn:hover {
+    background: #0e85ce;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(16, 156, 241, 0.4);
+}
 
 @media (max-width: 850px) {
     .reviewsSection {

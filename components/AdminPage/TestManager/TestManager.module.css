@@ -334,12 +334,55 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .cancelButton {
-    background: #27272a;
-    color: #a1a1aa;
+  .modal {
+    background: #1a1a1a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
+    color: #ffffff !important;
   }
-  .cancelButton:hover {
-    background: #3f3f46;
+
+  .modal h4 {
+    color: #ffffff !important;
+  }
+
+  .modal :global(*) {
+    color: #cbd5e1 !important;
+    background-color: transparent !important;
+  }
+
+  .modal :global(h1),
+  .modal :global(h2),
+  .modal :global(h3),
+  .modal :global(h4),
+  .modal :global(h5),
+  .modal :global(h6),
+  .modal :global(strong),
+  .modal :global(b) {
+    color: #ffffff !important;
+  }
+
+  .modalActions button,
+  .cancelButton,
+  .saveButton,
+  .closeBtn {
+    color: inherit !important;
+  }
+
+  .saveButton {
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+  }
+
+  .cancelButton {
+    background: #27272a !important;
+    color: #a1a1aa !important;
+  }
+
+  .input,
+  .textarea {
+    background: #27272a !important;
+    border-color: #3f3f46 !important;
+    color: #ffffff !important;
   }
 }
 

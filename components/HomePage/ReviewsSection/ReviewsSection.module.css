@@ -38,7 +38,6 @@
     color: #718096;
 }
 
-/* --- СТРУКТУРА КАРУСЕЛІ ДЛЯ ДЕСКТОПУ --- */
 .carouselWrapper {
     display: flex;
     align-items: center;
@@ -124,7 +123,6 @@
     font-weight: 600;
 }
 
-/* Кнопки-стрілки */
 .arrowButton {
     background: #ffffff;
     border: 1px solid #edf2f7;
@@ -148,7 +146,6 @@
     transform: scale(1.05);
 }
 
-/* --- 🔥 АДАПТИВНІСТЬ ПІД МОБІЛЬНІ ТЕЛЕФОНИ (ВЕРСТКА БІЛЬШЕ НЕ ЛАМАЄТЬСЯ) --- */
 @media (max-width: 850px) {
     .reviewsSection {
         padding: 40px 0;
@@ -159,7 +156,6 @@
         padding: 0 10px;
     }
 
-    /* Тримаємо стрілки та картку строго в один горизонтальний ряд */
     .carouselWrapper {
         display: flex;
         flex-direction: row;
@@ -169,7 +165,6 @@
         width: 100%;
     }
 
-    /* Зменшуємо кнопки, щоб вони акуратно влізли по боках */
     .arrowButton {
         width: 42px;
         height: 42px;
@@ -177,28 +172,24 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
 
-    /* Картка відгуку адаптується під простір між стрілками */
     .carouselCard {
-        flex-direction: column; /* Картинка зверху, текст знизу */
+        flex-direction: column;
         height: auto;
         border-radius: 20px;
         flex: 1;
-        max-width: calc(100% - 100px); /* Чітко лімітуємо ширину під екран мобілки */
+        max-width: calc(100% - 100px);
     }
 
-    /* 📉 Компактна висота для великої фотки */
     .imageSide {
         width: 100%;
         flex: none;
         height: 200px;
     }
 
-    /* Зменшуємо внутрішні відступи контенту */
     .contentSide {
         padding: 20px 24px;
     }
 
-    /* 📝 Робимо текст відгуку акуратним мобільним шрифтом */
     .reviewText {
         font-size: 14px;
         line-height: 1.5;
@@ -224,7 +215,6 @@
     }
 }
 
-/* Додатковий фікс для зовсім вузьких екранів */
 @media (max-width: 400px) {
     .carouselCard {
         max-width: calc(100% - 84px);

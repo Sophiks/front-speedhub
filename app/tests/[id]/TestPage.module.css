@@ -65,3 +65,12 @@
         font-size: 15px;
     }
 }
+@media (prefers-color-scheme: dark) {
+    .themeTitle {
+        color: #ffffff;
+    }
+    .topThemeBadge {
+        background-color: rgba(16, 156, 241, 0.15);
+        border-color: rgba(16, 156, 241, 0.3);
+    }
+}

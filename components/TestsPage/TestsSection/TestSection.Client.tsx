@@ -10,7 +10,7 @@ const TestsSectionClient = () => {
         <section className={css.section}>
             <div className={css.container}>
                 <h2 className={css.heading}>
-                    Тести по <span className={css.highlight}>темах</span>
+                    Тести за <span className={css.highlight}>темами</span>
                 </h2>
 
                 <div className={css.grid}>

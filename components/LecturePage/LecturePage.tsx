@@ -45,6 +45,14 @@ export default function LecturePage() {
         fetchLectures();
     }, []);
 
+    const handleLectureSelect = (id: string) => {
+        setActiveLectureId(id);
+
+        if (window.innerWidth <= 768) {
+            setSidebarOpen(false);
+        }
+    };
+
     const currentLecture = lectures.find((l) => l._id === activeLectureId) || lectures[0];
 
     if (loading) {
@@ -70,7 +78,7 @@ export default function LecturePage() {
                                 <button
                                     key={lec._id}
                                     className={`${css.lectureItem} ${isActive ? css.activeItem : ""}`}
-                                    onClick={() => setActiveLectureId(lec._id)}
+                                    onClick={() => handleLectureSelect(lec._id)} // 👈 Викликаємо нашу нову розумну функцію
                                 >
                                     <span className={css.lectureTitleText}>{lec.title}</span>
                                 </button>

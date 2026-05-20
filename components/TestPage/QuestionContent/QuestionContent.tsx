@@ -12,7 +12,7 @@ const QuestionContent = ({ question }: QuestionContentProps) => {
                 <ul className={css.imageBlock}>
                     {question.image.map((link, index) => (
                         <li key={index} className={css.imageItem}>
-                            <Image
+                            <img
                                 src={link}
                                 alt={`Ілюстрація до питання`}
                                 width={800}

@@ -4,11 +4,15 @@
   border: 1px solid var(--section-card-border);
   box-shadow: var(--section-img-shadow);
   overflow: hidden;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 850px;
 }
 
 .th {
@@ -24,29 +28,18 @@
   white-space: nowrap;
 }
 
-.th:nth-child(1) {
-  width: auto;
-}
-.th:nth-child(2) {
-  width: 160px;
-}
-.th:nth-child(3) {
-  width: 180px;
-}
-.th:nth-child(4) {
-  width: 240px;
-}
-.th:nth-child(5) {
-  width: 100px;
-  text-align: center;
-}
+.th:nth-child(1) { width: auto; }
+.th:nth-child(2) { width: 150px; }
+.th:nth-child(3) { width: 160px; }
+.th:nth-child(4) { width: 220px; }
+.th:nth-child(5) { width: 90px; text-align: center; }
 
 .tr:hover {
   background: var(--section-card-hover-bg);
 }
 
 .td {
-  padding: 20px 24px;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--section-card-border);
   color: var(--section-text-title);
   vertical-align: middle;
@@ -61,11 +54,13 @@
   font-size: 15px;
   color: var(--section-text-title);
   margin-bottom: 4px;
+  white-space: nowrap;
 }
 
 .userEmail {
   font-size: 12px;
   color: var(--section-text-desc);
+  white-space: nowrap;
 }
 
 .statsBtn {
@@ -99,7 +94,7 @@
 .subSelect,
 .subSelectPremium {
   width: 100%;
-  max-width: 150px;
+  max-width: 140px;
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid var(--section-card-border);
@@ -109,6 +104,7 @@
   font-weight: 700;
   cursor: pointer;
   outline: none;
+  transition: border-color 0.2s;
 }
 
 .roleSelectAdmin,
@@ -120,15 +116,15 @@
 .subscriptionGroup {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  max-width: 200px;
+  max-width: 180px;
 }
 
 .premiumInfo {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .dateInput {
@@ -138,7 +134,7 @@
   border: 1px solid var(--section-card-border);
   background: var(--section-bg);
   color: var(--section-text-title);
-  font-size: 11px;
+  font-size: 12px;
   font-family: inherit;
   outline: none;
   cursor: pointer;
@@ -155,18 +151,19 @@
 .deleteBtn {
   background: none;
   border: none;
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
-  padding: 10px;
+  padding: 8px;
   border-radius: 50%;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: #ef4444;
 }
 
 .deleteBtn:hover {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.15);
   transform: scale(1.1);
 }
 
@@ -174,4 +171,26 @@
   padding: 80px;
   text-align: center;
   color: var(--section-text-desc);
+}
+
+@media (max-width: 768px) {
+  .td, .th {
+    padding: 12px 14px;
+  }
+
+  .roleSelect, .roleSelectAdmin, .subSelect, .subSelectPremium {
+    padding: 8px 10px;
+    font-size: 11px;
+    max-width: 110px;
+  }
+
+  .subscriptionGroup {
+    max-width: 140px;
+    gap: 6px;
+  }
+
+  .dateInput {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
 }

@@ -11,10 +11,8 @@ export default function LectureManager() {
     const [lectures, setLectures] = useState<Lecture[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // Стейт для перегляду деталей
     const [viewingLecture, setViewingLecture] = useState<Lecture | null>(null);
 
-    // Стейт для створення / редагування
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingLecture, setEditingLecture] = useState<Lecture | null>(null);
 
@@ -87,7 +85,7 @@ export default function LectureManager() {
                 <button
                     className={styles.addButton}
                     onClick={() => {
-                        setEditingLecture(null); // скидуємо в null для створення нової
+                        setEditingLecture(null);
                         setIsEditModalOpen(true);
                     }}
                 >
@@ -95,73 +93,82 @@ export default function LectureManager() {
                 </button>
             </header>
 
-            <table className={styles.tableContainer}>
-                <thead>
-                <tr className={styles.tableHeader}>
-                    <th>ID Теми</th>
-                    <th>Назва лекції / Розділу</th>
-                    <th>Дії</th>
-                </tr>
-                </thead>
-                <tbody>
-                {lectures.length === 0 ? (
-                    <tr className={styles.tableRow}>
-                        <td colSpan={3} className={styles.tableCell} style={{ textAlign: "center", color: "#718096" }}>
-                            Лекцій у базі даних не знайдено
-                        </td>
+            <div className={styles.tableWrapper}>
+                <table className={styles.tableContainer}>
+                    <thead>
+                    <tr className={styles.tableHeader}>
+                        <th>ID</th>
+                        <th>Назва лекції / Розділу</th>
+                        <th>Перегляд</th>
+                        <th>Дії</th>
                     </tr>
-                ) : (
-                    lectures.map((l) => (
-                        <tr key={l._id} className={styles.tableRow}>
-                            <td className={styles.tableCell}>
-                                <strong className={styles.idBadge}>{l.topic_id.toUpperCase()}</strong>
+                    </thead>
+                    <tbody>
+                    {lectures.length === 0 ? (
+                        <tr className={styles.tableRow}>
+                            <td colSpan={4} className={styles.tableCell} style={{ textAlign: "center", color: "#718096" }}>
+                                Лекцій у базі даних не знайдено
                             </td>
-                            <td className={styles.tableCell}>
-                                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                                    <span style={{ fontWeight: "500" }}>{l.title}</span>
+                        </tr>
+                    ) : (
+                        lectures.map((l) => (
+                            <tr key={l._id} className={styles.tableRow}>
+                                <td className={styles.tableCell} style={{ width: "80px" }}>
+                                    <strong className={styles.idBadge}>{l.topic_id.toUpperCase()}</strong>
+                                </td>
+
+                                <td className={styles.tableCell}>
+                            <span style={{ fontWeight: "500", color: "var(--section-text-title)" }}>
+                                {l.title}
+                            </span>
+                                </td>
+
+                                <td className={styles.tableCell} style={{ width: "130px", textAlign: "center" }}>
                                     <button
                                         onClick={() => setViewingLecture(l)}
                                         style={{
                                             background: "#e3f2fd",
                                             color: "#109cf1",
                                             border: "none",
-                                            padding: "4px 8px",
+                                            padding: "6px 12px",
                                             borderRadius: "6px",
                                             fontSize: "12px",
                                             cursor: "pointer",
-                                            fontWeight: "600"
+                                            fontWeight: "600",
+                                            whiteSpace: "nowrap",
+                                            display: "inline-block"
                                         }}
                                     >
                                         👁️ Детальніше
                                     </button>
-                                </div>
-                            </td>
-                            <td className={styles.tableCell}>
-                                <div style={{ display: "flex", gap: "8px" }}>
-                                    <button
-                                        className={styles.editButton}
-                                        onClick={() => {
-                                            setEditingLecture(l);
-                                            setIsEditModalOpen(true);
-                                        }}
-                                    >
-                                        Редагувати
-                                    </button>
-                                    <button
-                                        className={styles.deleteButton}
-                                        onClick={() => openDeleteConfirm(l._id, l.title)}
-                                    >
-                                        Видалити
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    ))
-                )}
-                </tbody>
-            </table>
+                                </td>
 
-            {/* Модалка перегляду лекції */}
+                                <td className={styles.tableCell} style={{ width: "180px", textAlign: "right" }}>
+                                    <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+                                        <button
+                                            className={styles.editButton}
+                                            onClick={() => {
+                                                setEditingLecture(l);
+                                                setIsEditModalOpen(true);
+                                            }}
+                                        >
+                                            Редагувати
+                                        </button>
+                                        <button
+                                            className={styles.deleteButton}
+                                            onClick={() => openDeleteConfirm(l._id, l.title)}
+                                        >
+                                            Видалити
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                    </tbody>
+                </table>
+            </div>
+
             {viewingLecture && (
                 <LectureViewModal
                     lecture={viewingLecture}
@@ -169,7 +176,6 @@ export default function LectureManager() {
                 />
             )}
 
-            {/* Модалка створення / редагування лекції */}
             {isEditModalOpen && (
                 <EditLectureModal
                     lecture={editingLecture}

@@ -10,7 +10,6 @@ export default function ReviewManager() {
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState<string>("all");
 
-    // Змінили userName на fullName, щоб передавати туди повне ім'я для модалки
     const [confirmConfig, setConfirmConfig] = useState<{
         isOpen: boolean;
         mongoId: string;
@@ -94,78 +93,78 @@ export default function ReviewManager() {
                 </div>
             </header>
 
-            <table className={styles.tableContainer}>
-                <thead>
-                <tr className={styles.tableHeader}>
-                    <th>Користувач</th>
-                    <th>Текст відгуку</th>
-                    <th>Статус</th>
-                    <th>Дії</th>
-                </tr>
-                </thead>
-                <tbody>
-                {filteredReviews.length === 0 ? (
-                    <tr className={styles.tableRow}>
-                        <td colSpan={4} className={styles.tableCell} style={{ textAlign: "center", color: "#718096" }}>
-                            Відгуків у цій категорії немає
-                        </td>
+            <div className={styles.tableWrapper}>
+                <table className={styles.tableContainer}>
+                    <thead>
+                    <tr className={styles.tableHeader}>
+                        <th>Користувач</th>
+                        <th>Текст відгуку</th>
+                        <th>Статус</th>
+                        <th>Дії</th>
                     </tr>
-                ) : (
-                    filteredReviews.map((r) => {
-                        // Формуємо повне ім'я для зручності виведення
-                        const fullName = `${r.name || ""} ${r.surname || ""}`.trim() || "Анонім";
+                    </thead>
+                    <tbody>
+                    {filteredReviews.length === 0 ? (
+                        <tr className={styles.tableRow}>
+                            <td colSpan={4} className={styles.tableCell} style={{ textAlign: "center", color: "#718096" }}>
+                                Відгуків у цій категорії немає
+                            </td>
+                        </tr>
+                    ) : (
+                        filteredReviews.map((r) => {
+                            const fullName = `${r.name || ""} ${r.surname || ""}`.trim() || "Анонім";
 
-                        return (
-                            <tr key={r._id} className={styles.tableRow}>
-                                <td className={styles.tableCell}>
-                                    {/* Підтягуємо ім'я та прізвище з бази */}
-                                    <strong>{fullName}</strong>
-                                    <div style={{ fontSize: "12px", color: "#718096", marginTop: "2px" }}>
-                                        Студент SpeedHub
-                                    </div>
-                                </td>
-                                <td className={styles.tableCell} style={{ maxWidth: "450px", whiteSpace: "normal" }}>
-                                    {r.text}
-                                </td>
-                                <td className={styles.tableCell}>
-                                    <span
-                                        className={r.isApproved ? styles.idBadge : styles.deleteButton}
-                                        style={{
-                                            background: r.isApproved ? "#28a745" : "#ffc107",
-                                            color: r.isApproved ? "#fff" : "#000",
-                                            padding: "4px 8px",
-                                            borderRadius: "6px",
-                                            fontSize: "12px"
-                                        }}
-                                    >
-                                        {r.isApproved ? "Затверджено" : "Модерація"}
-                                    </span>
-                                </td>
-                                <td className={styles.tableCell}>
-                                    <div style={{ display: "flex", gap: "8px" }}>
-                                        {!r.isApproved && (
-                                            <button
-                                                className={styles.editButton}
-                                                style={{ background: "#109cf1", color: "#fff" }}
-                                                onClick={() => handleApprove(r._id)}
-                                            >
-                                                Затвердити
-                                            </button>
-                                        )}
-                                        <button
-                                            className={styles.deleteButton}
-                                            onClick={() => openDeleteConfirm(r._id, fullName)}
+                            return (
+                                <tr key={r._id} className={styles.tableRow}>
+                                    <td className={styles.tableCell}>
+                                        <strong>{fullName}</strong>
+                                        <div style={{ fontSize: "12px", color: "#718096", marginTop: "2px" }}>
+                                            Студент SpeedHub
+                                        </div>
+                                    </td>
+                                    <td className={styles.tableCell} style={{ maxWidth: "450px", whiteSpace: "normal" }}>
+                                        {r.text}
+                                    </td>
+                                    <td className={styles.tableCell}>
+                                        <span
+                                            className={r.isApproved ? styles.idBadge : styles.deleteButton}
+                                            style={{
+                                                background: r.isApproved ? "#28a745" : "#ffc107",
+                                                color: r.isApproved ? "#fff" : "#000",
+                                                padding: "4px 8px",
+                                                borderRadius: "6px",
+                                                fontSize: "12px"
+                                            }}
                                         >
-                                            Видалити
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        );
-                    })
-                )}
-                </tbody>
-            </table>
+                                            {r.isApproved ? "Затверджено" : "Модерація"}
+                                        </span>
+                                    </td>
+                                    <td className={styles.tableCell}>
+                                        <div style={{ display: "flex", gap: "8px" }}>
+                                            {!r.isApproved && (
+                                                <button
+                                                    className={styles.editButton}
+                                                    style={{ background: "#109cf1", color: "#fff" }}
+                                                    onClick={() => handleApprove(r._id)}
+                                                >
+                                                    Затвердити
+                                                </button>
+                                            )}
+                                            <button
+                                                className={styles.deleteButton}
+                                                onClick={() => openDeleteConfirm(r._id, fullName)}
+                                            >
+                                                Видалити
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })
+                    )}
+                    </tbody>
+                </table>
+            </div>
 
             <ConfirmModal
                 isOpen={confirmConfig.isOpen}

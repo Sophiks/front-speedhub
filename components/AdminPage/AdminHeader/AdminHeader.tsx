@@ -15,9 +15,10 @@ interface AdminHeaderProps {
     pendingReviews?: number;
     approvedReviews?: number;
   };
+  onMenuToggle: () => void;
 }
 
-export default function AdminHeader({ currentTab, stats }: AdminHeaderProps) {
+export default function AdminHeader({ currentTab, stats, onMenuToggle }: AdminHeaderProps) {
   const renderHeaderContent = () => {
     switch (currentTab) {
       case "users":
@@ -63,7 +64,13 @@ export default function AdminHeader({ currentTab, stats }: AdminHeaderProps) {
 
   return (
       <header className={css.header}>
-        <h1 className={css.title}>{title}</h1>
+        <div className={css.titleBlock}>
+          <button className={css.burgerBtn} onClick={onMenuToggle}>
+            ☰
+          </button>
+          <h1 className={css.title}>{title}</h1>
+        </div>
+
         <div className={css.statsGroup}>
           {cards.map((card, index) => (
               <div key={index} className={css.statCard}>

@@ -19,6 +19,9 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<AdminTab>("users");
   const [isAuthorized, setIsAuthorized] = useState(false);
 
+  // 🔥 Новий стейт для керування мобільним сайдбаром
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+
   const [users, setUsers] = useState<User[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [lectures, setLectures] = useState<Lecture[]>([]);
@@ -104,7 +107,7 @@ export default function AdminPage() {
   const adminStats = {
     totalUsers: users.length,
     premiumUsers: users.filter((u) => u.subscriptionType === "premium").length,
-    totalLectures: lectures.length, // Отримує реальні 42 лекції з вашої бд
+    totalLectures: lectures.length,
     totalTests: totalTests,
     pendingReviews: reviews.filter((r) => !r.isApproved).length,
     approvedReviews: reviews.filter((r) => r.isApproved).length,
@@ -112,14 +115,27 @@ export default function AdminPage() {
 
   return (
       <div className={styles.adminContainer}>
-        {/* Панель навігації */}
-        <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        {sidebarOpen && (
+            <div
+                className={styles.overlay}
+                onClick={() => setSidebarOpen(false)}
+            />
+        )}
+
+        <AdminSidebar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            isOpen={sidebarOpen}
+            setIsOpen={setSidebarOpen}
+        />
 
         <main className={styles.mainContent}>
-          {/* Динамічний Хедер */}
-          <AdminHeader currentTab={activeTab} stats={adminStats} />
+          <AdminHeader
+              currentTab={activeTab}
+              stats={adminStats}
+              onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
+          />
 
-          {/* Контент-менеджери вкладок */}
           {activeTab === "users" && (
               <UserTable
                   users={users}

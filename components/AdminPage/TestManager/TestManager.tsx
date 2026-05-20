@@ -89,96 +89,98 @@ export default function TestManager() {
   const filteredQuestions = useMemo(() => {
     if (selectedTopic === "all") return questions;
     return questions.filter(
-      (q) => getTopicFromId(q.id || "") === selectedTopic,
+        (q) => getTopicFromId(q.id || "") === selectedTopic,
     );
   }, [questions, selectedTopic]);
 
   if (loading) return <div className={styles.loading}>Завантаження...</div>;
 
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.titleGroup}>
-          <h3>Тести ({filteredQuestions.length})</h3>
-          <select
-            className={styles.topicSelect}
-            value={selectedTopic}
-            onChange={(e) => setSelectedTopic(e.target.value)}
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <div className={styles.titleGroup}>
+            <h3>Тести ({filteredQuestions.length})</h3>
+            <select
+                className={styles.topicSelect}
+                value={selectedTopic}
+                onChange={(e) => setSelectedTopic(e.target.value)}
+            >
+              <option value="all">Всі розділи</option>
+              {topics
+                  .filter((t) => t !== "all")
+                  .map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                  ))}
+            </select>
+          </div>
+          <button
+              className={styles.addButton}
+              onClick={() => {
+                setEditingQuestion(null);
+                setIsModalOpen(true);
+              }}
           >
-            <option value="all">Всі розділи</option>
-            {topics
-              .filter((t) => t !== "all")
-              .map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-          </select>
-        </div>
-        <button
-          className={styles.addButton}
-          onClick={() => {
-            setEditingQuestion(null);
-            setIsModalOpen(true);
-          }}
-        >
-          + Створити питання
-        </button>
-      </header>
+            + Створити питання
+          </button>
+        </header>
 
-      <table className={styles.tableContainer}>
-        <thead>
-          <tr className={styles.tableHeader}>
-            <th>ID</th>
-            <th>Питання</th>
-            <th>Дії</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredQuestions.map((q) => (
-            <tr key={q._id} className={styles.tableRow}>
-              <td className={styles.tableCell}>
-                <strong className={styles.idBadge}>{q.id}</strong>
-              </td>
-              <td className={styles.tableCell}>
-                {q.question.substring(0, 70)}...
-              </td>
-              <td className={styles.tableCell}>
-                <button
-                  className={styles.editButton}
-                  onClick={() => handleEdit(q)}
-                >
-                  Редагувати
-                </button>
-                <button
-                  className={styles.deleteButton}
-                  onClick={() => openDeleteConfirm(q._id, q.id)}
-                >
-                  Видалити
-                </button>
-              </td>
+        <div className={styles.tableWrapper}>
+          <table className={styles.tableContainer}>
+            <thead>
+            <tr className={styles.tableHeader}>
+              <th>ID</th>
+              <th>Питання</th>
+              <th>Дії</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+            {filteredQuestions.map((q) => (
+                <tr key={q._id} className={styles.tableRow}>
+                  <td className={styles.tableCell}>
+                    <strong className={styles.idBadge}>{q.id}</strong>
+                  </td>
+                  <td className={styles.tableCell}>
+                    {q.question.substring(0, 70)}...
+                  </td>
+                  <td className={styles.tableCell}>
+                    <button
+                        className={styles.editButton}
+                        onClick={() => handleEdit(q)}
+                    >
+                      Редагувати
+                    </button>
+                    <button
+                        className={styles.deleteButton}
+                        onClick={() => openDeleteConfirm(q._id, q.id)}
+                    >
+                      Видалити
+                    </button>
+                  </td>
+                </tr>
+            ))}
+            </tbody>
+          </table>
+        </div>
 
-      {isModalOpen && (
-        <EditQuestionModal
-          question={editingQuestion}
-          onClose={() => setIsModalOpen(false)}
-          onSave={handleSave}
+        {isModalOpen && (
+            <EditQuestionModal
+                question={editingQuestion}
+                onClose={() => setIsModalOpen(false)}
+                onSave={handleSave}
+            />
+        )}
+
+        <ConfirmModal
+            isOpen={confirmConfig.isOpen}
+            title="Видалення питання"
+            message={`Ви впевнені, що хочете видалити питання ${confirmConfig.questionId}? Цю дію неможливо скасувати.`}
+            onConfirm={handleConfirmDelete}
+            onCancel={closeDeleteConfirm}
+            type="danger"
+            confirmText="Видалити"
         />
-      )}
-
-      <ConfirmModal
-        isOpen={confirmConfig.isOpen}
-        title="Видалення питання"
-        message={`Ви впевнені, що хочете видалити питання ${confirmConfig.questionId}? Цю дію неможливо скасувати.`}
-        onConfirm={handleConfirmDelete}
-        onCancel={closeDeleteConfirm}
-        type="danger"
-        confirmText="Видалити"
-      />
-    </div>
+      </div>
   );
 }

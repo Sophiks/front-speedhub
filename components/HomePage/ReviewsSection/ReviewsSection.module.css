@@ -38,6 +38,7 @@
     color: #718096;
 }
 
+/* --- СТРУКТУРА КАРУСЕЛІ ДЛЯ ДЕСКТОПУ --- */
 .carouselWrapper {
     display: flex;
     align-items: center;
@@ -45,6 +46,7 @@
     gap: 32px;
     max-width: 1020px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .carouselCard {
@@ -122,6 +124,7 @@
     font-weight: 600;
 }
 
+/* Кнопки-стрілки */
 .arrowButton {
     background: #ffffff;
     border: 1px solid #edf2f7;
@@ -145,42 +148,95 @@
     transform: scale(1.05);
 }
 
+/* --- 🔥 АДАПТИВНІСТЬ ПІД МОБІЛЬНІ ТЕЛЕФОНИ (ВЕРСТКА БІЛЬШЕ НЕ ЛАМАЄТЬСЯ) --- */
 @media (max-width: 850px) {
     .reviewsSection {
-        padding: 56px 0;
+        padding: 40px 0;
     }
 
     .title {
-        font-size: 28px;
+        font-size: 26px;
+        padding: 0 10px;
     }
 
+    /* Тримаємо стрілки та картку строго в один горизонтальний ряд */
     .carouselWrapper {
-        gap: 16px;
-        flex-direction: column;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
     }
 
+    /* Зменшуємо кнопки, щоб вони акуратно влізли по боках */
+    .arrowButton {
+        width: 42px;
+        height: 42px;
+        font-size: 14px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Картка відгуку адаптується під простір між стрілками */
     .carouselCard {
-        flex-direction: column;
+        flex-direction: column; /* Картинка зверху, текст знизу */
         height: auto;
         border-radius: 20px;
+        flex: 1;
+        max-width: calc(100% - 100px); /* Чітко лімітуємо ширину під екран мобілки */
     }
 
+    /* 📉 Компактна висота для великої фотки */
     .imageSide {
         width: 100%;
         flex: none;
-        height: 280px;
+        height: 200px;
     }
 
+    /* Зменшуємо внутрішні відступи контенту */
     .contentSide {
-        padding: 32px;
+        padding: 20px 24px;
     }
 
+    /* 📝 Робимо текст відгуку акуратним мобільним шрифтом */
     .reviewText {
-        font-size: 15px;
-        margin-bottom: 24px;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 16px;
+    }
+
+    .quoteIcon {
+        font-size: 80px;
+        top: 5px;
+        left: 15px;
+    }
+
+    .userMeta {
+        padding-top: 12px;
     }
 
     .userName {
-        font-size: 18px;
+        font-size: 16px;
+    }
+
+    .userStatus {
+        font-size: 12px;
+    }
+}
+
+/* Додатковий фікс для зовсім вузьких екранів */
+@media (max-width: 400px) {
+    .carouselCard {
+        max-width: calc(100% - 84px);
+    }
+    .arrowButton {
+        width: 36px;
+        height: 36px;
+    }
+    .imageSide {
+        height: 170px;
+    }
+    .contentSide {
+        padding: 16px;
     }
 }

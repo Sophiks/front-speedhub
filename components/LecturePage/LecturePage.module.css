@@ -4,7 +4,7 @@
     height: 100vh;
     max-height: 100vh;
     background: #0f172a;
-    overflow: hidden ;
+    overflow: hidden;
     position: relative;
     box-sizing: border-box;
 }
@@ -67,10 +67,10 @@
 .sidebarContent {
     padding: 16px;
     flex: 1;
-    overflow-y: auto ;
+    overflow-y: auto;
     min-height: 0;
     box-sizing: border-box;
-    padding-bottom: 140px ;
+    padding-bottom: 140px;
 }
 
 .sidebarContent::-webkit-scrollbar {
@@ -107,7 +107,7 @@
 }
 
 .activeItem {
-    background: rgba(59, 130, 246, 0.15) ;
+    background: rgba(59, 130, 246, 0.15);
     border-color: #3b82f6;
 }
 
@@ -126,13 +126,13 @@
 .contentArea {
     flex: 1;
     padding: 40px;
-    overflow-y: auto ;
+    overflow-y: auto;
     height: 100%;
     max-height: 100%;
     background: #0f172a;
     box-sizing: border-box;
     min-width: 0;
-    padding-bottom: 140px ;
+    padding-bottom: 140px;
 }
 
 .contentArea::-webkit-scrollbar {
@@ -195,6 +195,7 @@
     border: 1px solid #334155;
 }
 
+/* Картка тесту внизу */
 .testNavigationBlock {
     margin-top: 60px;
     padding-top: 40px;
@@ -276,9 +277,9 @@
 
 .floatingOpenBtn {
     position: fixed;
-    bottom: 130px;
+    bottom: 24px;
     left: 24px;
-    z-index: 40;
+    z-index: 90;
     background: #3b82f6;
     color: white;
     padding: 14px 24px;
@@ -286,52 +287,141 @@
     font-weight: 700;
     border: none;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
 }
 
 :global(.footer) {
     position: fixed;
-    bottom: 0 ;
+    bottom: 0;
     left: 0;
     width: 100%;
     height: 120px;
-    max-height: 120px ;
-    margin-top: 0 ;
-    z-index: 99999 ;
-    background-color: #0f172a ;
-    backdrop-filter: none ;
-    -webkit-backdrop-filter: none ;
-
-    padding: 20px 0 ;
-    border-top: 1px solid rgba(255, 255, 255, 0.05) ;
+    max-height: 120px;
+    margin-top: 0;
+    z-index: 99999;
+    background-color: #0f172a;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     box-sizing: border-box;
 }
 
 :global(.footer) :global(.container) {
-    background-color: #0f172a ;
-    gap: 8px ;
-    flex-direction: row ;
-    justify-content: space-between ;
-    align-items: center ;
+    background-color: #0f172a;
+    gap: 8px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 @media (max-width: 768px) {
+    .mainLayout {
+        height: auto;
+        max-height: none;
+        overflow: visible !important;
+        display: block;
+    }
+
     .sidebar {
-        position: fixed;
-        top: 0;
-        bottom: 120px;
+        position: fixed !important;
+        top: 0 !important;
         left: 0;
         width: 100%;
         max-width: 100%;
         min-width: 100%;
-        height: calc(100vh - 120px);
+        height: 100vh !important;
+        max-height: 100vh !important;
+
+        z-index: 999999 !important;
+
+        background-color: #1e293b !important;
+        border-right: none;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        box-sizing: border-box;
     }
+
+    .sidebarHeader {
+        padding-top: 80px !important;
+        padding-bottom: 20px;
+        background: #1e293b;
+        border-bottom: 1px solid #334155;
+    }
+
+    .sidebarContent {
+        padding: 16px;
+        overflow-y: auto !important;
+        flex: 1;
+        box-sizing: border-box;
+        padding-bottom: 40px !important;
+    }
+
+    .sidebarOpen {
+        transform: translateX(0);
+    }
+
     .sidebarClosed {
         transform: translateX(-100%);
+        position: fixed;
     }
+
     .contentArea {
         padding: 24px 16px;
         width: 100%;
-        height: 100%;
+        height: auto;
+        max-height: none;
+        overflow-y: visible !important;
+        padding-bottom: 160px !important;
+    }
+
+    .mainTitle {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+
+    .articleBody {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .testCard {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 24px 20px;
+        gap: 20px;
+    }
+
+    .testCardHeader {
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .iconWrapper {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+    }
+
+    .testCardText h3 {
+        font-size: 17px;
+    }
+
+    .startTestBtn {
+        width: 100%;
+        text-align: center;
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    :global(.footer) {
+        position: relative !important;
+        height: auto !important;
+        max-height: none !important;
+        padding: 40px 16px !important;
+    }
+
+    :global(.footer) :global(.container) {
+        flex-direction: column !important;
+        gap: 20px !important;
     }
 }

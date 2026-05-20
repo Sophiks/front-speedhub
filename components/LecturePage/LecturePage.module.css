@@ -1,6 +1,5 @@
 .mainLayout {
     display: flex;
-    height: calc(100vh - 70px);
     width: 100%;
     background: #f8fafc;
     overflow: hidden;

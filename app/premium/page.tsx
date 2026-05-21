@@ -20,7 +20,7 @@ export default function PremiumPage() {
         {
             id: "monthly",
             name: "Місячний Premium",
-            price: 149,
+            price: 450,
             period: "місяць",
             badge: "Популярно",
             features: [
@@ -33,7 +33,7 @@ export default function PremiumPage() {
         {
             id: "year",
             name: "Річний доступ",
-            price: 399,
+            price: 1250,
             period: "назавжди",
             badge: "Вигідно",
             features: [

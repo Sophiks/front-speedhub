@@ -129,7 +129,6 @@ const TestPageClient = () => {
   const totalQuestions = tests?.length || 0;
   const isCurrentChecked = checkedAnswers[currentQuestion.id];
 
-  // Визначаємо назву поточної теми за її id з параметрів url
   const currentThemeTitle = themeMap[id] || `Тема: ${id?.toUpperCase()}`;
 
   const handleOptionSelect = (optionId: number) => {
